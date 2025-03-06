@@ -16,4 +16,7 @@ declare module "next-auth" {
   interface AdapterUser {
     providerAccountId?: string;   
 }
+  interface JWT {
+    providerAccountId?: string;
+  }
 }

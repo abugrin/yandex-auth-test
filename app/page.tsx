@@ -1,8 +1,10 @@
 import { auth } from "@/auth"
 import SignIn from "@/components/signin-button";
+import { useSession } from 'next-auth/react';
 
 export default async function Home() {
   const session = await auth()
+  //const { data: session } = useSession();
   
   console.log('Session: ', session);
   return (

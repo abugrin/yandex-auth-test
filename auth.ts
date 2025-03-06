@@ -18,15 +18,26 @@ export const config = {
         if (pathname === "/middleware-example") return !!auth
         return true
       },
-      async session({session, token, user}) {
+      async session({session, token}) {
         console.log(">>> Session calback");
-        console.log("AccountId: ", user);
-        //session.user.providerAccountId = user.providerAccountId
+        console.log("AccountId: ", session.user.providerAccountId);
+        console.log("Token: ", token);
+        session.user.providerAccountId = token.providerAccountId
         console.log(session);
         //session.user.id = token.id
         
         return session
       },
+      async jwt({ token, user, account }) {
+        if (user && account) {
+          console.log("JWT user: ", user)
+          console.log("JWT account ", account)
+          token.providerAccountId = account.providerAccountId; 
+          
+        }
+        return token;
+      },
+
       signIn({account, user}) {
         console.log(">>> SignIn AccountId: ", account?.providerAccountId);
         user.providerAccountId = account?.providerAccountId;
