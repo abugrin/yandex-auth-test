@@ -5,7 +5,7 @@ import type { Account, NextAuthConfig, User } from "next-auth"
 
 
 export const config = {
-    debug: true,
+    debug: false,
     theme: {
       logo: "https://next-auth.js.org/img/logo/logo-sm.png",
     },
@@ -19,19 +19,19 @@ export const config = {
         return true
       },
       async session({session, token}) {
-        console.log(">>> Session calback");
-        console.log("AccountId: ", session.user.providerAccountId);
-        console.log("Token: ", token);
+        //console.log(">>> Session calback");
+        //console.log("AccountId: ", session.user.providerAccountId);
+        //console.log("Token: ", token);
         session.user.providerAccountId = token.providerAccountId
-        console.log(session);
+        //console.log(session);
         //session.user.id = token.id
         
         return session
       },
       async jwt({ token, user, account }) {
         if (user && account) {
-          console.log("JWT user: ", user)
-          console.log("JWT account ", account)
+          //console.log("JWT user: ", user)
+          //console.log("JWT account ", account)
           token.providerAccountId = account.providerAccountId; 
           
         }
@@ -39,7 +39,7 @@ export const config = {
       },
 
       signIn({account, user}) {
-        console.log(">>> SignIn AccountId: ", account?.providerAccountId);
+        //console.log(">>> SignIn AccountId: ", account?.providerAccountId);
         user.providerAccountId = account?.providerAccountId;
         return true;
       }
