@@ -5,13 +5,14 @@ import type { Account, NextAuthConfig, User } from "next-auth"
 
 
 export const config = {
-    debug: false,
+    debug: true,
     theme: {
       logo: "https://next-auth.js.org/img/logo/logo-sm.png",
     },
     providers: [
-        Yandex,
+        Yandex({authorization: "https://oauth.yandex.ru/authorize?scope=login:info+calendar:all"})
     ],
+    
     callbacks: {
       authorized({ request, auth }) {
         const { pathname } = request.nextUrl
@@ -32,6 +33,7 @@ export const config = {
         if (user && account) {
           //console.log("JWT user: ", user)
           //console.log("JWT account ", account)
+          console.log("JWT token", token)
           token.providerAccountId = account.providerAccountId; 
           
         }

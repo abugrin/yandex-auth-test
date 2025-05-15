@@ -1,38 +1,41 @@
 import { auth } from "@/auth"
 import SignIn from "@/components/signin-button";
 import SignOut from "@/components/signout-button";
-import Link from "next/link";
 
 export default async function Home() {
-  const session = await auth()
+  const session = await auth();
   const group_names = [];
+  const token = process.env.TOKEN;
+  const org_id = process.env.ORGID;
   
   if (session) {
     const data = {
           method: "GET",
           headers: {
-              'Authorization': 'OAuth y0_AgAAAABzul54AAsyxAAAAAEPwe9VAAC6wi3sXodObqfH6wFPYqVoeeixug',
+              'Authorization': 'OAuth ' + token,
               'Content-Type': 'application/json',
           },
 
       };
-    const url = "https://api360.yandex.net/directory/v1/org/8015133/users/" + session?.user?.providerAccountId
+    const url = "https://api360.yandex.net/directory/v1/org/" + org_id + "/users/" + session?.user?.providerAccountId
     console.log("User Info URL: ", url)
     
     const res = await fetch(url, data);
     const usr_data = await res.json();
     const groups:[] = usr_data.groups;
 
-    console.log("Got user groups: ", groups)
+    if(groups) {
+      console.log("Got user groups: ", groups)
 
-    for (let i = 0; i < groups.length; i++) {
-      let group_url = "https://api360.yandex.net/directory/v1/org/8015133/groups/" + groups[i]
-      console.log(group_url)
-      let g_resp = await fetch(group_url, data)
-      let g_json = await g_resp.json()
-      console.log("Group: ", groups[i], " g_json: ", g_json)
-      group_names.push({id: groups[i], name: g_json.name})
+      for (let i = 0; i < groups.length; i++) {
+        let group_url = "https://api360.yandex.net/directory/v1/org/" + org_id + "/groups/" + groups[i]
+        console.log(group_url)
+        let g_resp = await fetch(group_url, data)
+        let g_json = await g_resp.json()
+        console.log("Group: ", groups[i], " g_json: ", g_json)
+        group_names.push({id: groups[i], name: g_json.name})
 
+      }
     }
   }
   
