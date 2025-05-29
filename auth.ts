@@ -34,6 +34,7 @@ export const config = {
           //console.log("JWT user: ", user)
           //console.log("JWT account ", account)
           console.log("JWT token", token)
+          console.log('Account', account)
           token.providerAccountId = account.providerAccountId; 
           
         }
